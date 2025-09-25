@@ -1,0 +1,82 @@
+# Server info
+server:
+  name: "API Gateway MCP"
+  description: "Generic API gateway that wraps REST APIs as MCP tools"
+  version: "1.0.0"
+
+# Authentication
+auth:
+  token_env_var: "API_GATEWAY_TOKEN"  # Environment variable for the API token
+
+# Tool definitions
+tools:
+  - name: "weather-lookup"
+    description: "Get current weather information for a city"
+    endpoint: "https://api.openweathermap.org/data/2.5/weather"
+    method: "GET"
+    timeout: 30
+    query_params:
+      q: "{{city}}"
+      appid: "{{env:OPENWEATHER_API_KEY}}"
+      units: "metric"
+    parameters:
+      city:
+        type: "string"
+        description: "Name of the city to get weather for"
+        required: true
+
+  - name: "github-user-info"
+    description: "Get information about a GitHub user"
+    endpoint: "https://api.github.com/users/{{username}}"
+    method: "GET"
+    timeout: 30
+    parameters:
+      username:
+        type: "string"
+        description: "GitHub username to look up"
+        required: true
+
+  - name: "jsonplaceholder-post"
+    description: "Create a new post using JSONPlaceholder API"
+    endpoint: "https://jsonplaceholder.typicode.com/posts"
+    method: "POST"
+    timeout: 30
+    template: |
+      {
+        "title": "{{title}}",
+        "body": "{{body}}",
+        "userId": {{userId}}
+      }
+    parameters:
+      title:
+        type: "string"
+        description: "Title of the post"
+        required: true
+      body:
+        type: "string"
+        description: "Body content of the post"
+        required: true
+      userId:
+        type: "number"
+        description: "ID of the user creating the post"
+        required: true
+        default: 1
+
+  - name: "httpbin-get"
+    description: "Test GET request using httpbin.org"
+    endpoint: "https://httpbin.org/get"
+    method: "GET"
+    timeout: 30
+    query_params:
+      param1: "{{value1}}"
+      param2: "{{value2}}"
+    parameters:
+      value1:
+        type: "string"
+        description: "First parameter value"
+        required: true
+      value2:
+        type: "string"
+        description: "Second parameter value"
+        required: false
+        default: "default-value"

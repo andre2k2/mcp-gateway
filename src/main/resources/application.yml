@@ -1,0 +1,17 @@
+# Configuration for the MCP Gateway
+server:
+  port: 8080
+
+spring:
+  application:
+    name: mcp-gateway
+
+# MCP Configuration
+mcp:
+  config:
+    file: api-config.yaml  # Default config file (can be overridden by env var MCP_CONFIG_FILE)
+
+# Logging configuration
+logging:
+  level:
+    com.github.mcpgateway: DEBUG

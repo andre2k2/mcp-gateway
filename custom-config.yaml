@@ -1,0 +1,68 @@
+# Server info
+server:
+  name: "Custom API Gateway MCP"
+  description: "Custom API gateway with specific configurations"
+  version: "1.0.0"
+
+# Authentication
+auth:
+  token_env_var: "CUSTOM_API_TOKEN"  # Environment variable for the API token
+
+# Tool definitions
+tools:
+  - name: "custom-weather"
+    description: "Get weather information for a specific location"
+    endpoint: "https://api.openweathermap.org/data/2.5/weather"
+    method: "GET"
+    timeout: 30
+    query_params:
+      q: "{{city}}"
+      appid: "{{env:OPENWEATHER_API_KEY}}"
+      units: "metric"
+    parameters:
+      city:
+        type: "string"
+        description: "Name of the city to get weather for"
+        required: true
+
+  - name: "custom-github-repo"
+    description: "Get information about a GitHub repository"
+    endpoint: "https://api.github.com/repos/{{owner}}/{{repo}}"
+    method: "GET"
+    timeout: 30
+    parameters:
+      owner:
+        type: "string"
+        description: "GitHub repository owner"
+        required: true
+      repo:
+        type: "string"
+        description: "GitHub repository name"
+        required: true
+
+  - name: "custom-post-data"
+    description: "Send data to a custom endpoint"
+    endpoint: "https://httpbin.org/post"
+    method: "POST"
+    timeout: 30
+    template: |
+      {
+        "message": "{{message}}",
+        "timestamp": "{{timestamp}}",
+        "user": "{{user}}"
+      }
+    parameters:
+      message:
+        type: "string"
+        description: "Message to send"
+        required: true
+      timestamp:
+        type: "string"
+        description: "Timestamp for the message"
+        required: false
+        default: "{{env:CURRENT_TIMESTAMP}}"
+      user:
+        type: "string"
+        description: "User sending the message"
+        required: false
+        default: "anonymous"
