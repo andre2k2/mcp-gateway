@@ -63,6 +63,55 @@ tools:
         default: 10
 ```
 
+## Configuração de Arquivos Personalizados
+
+Por padrão, o servidor usa o arquivo `src/main/resources/api-config.yaml`. Você pode especificar um arquivo de configuração personalizado de várias formas:
+
+### 1. Variável de Ambiente (Recomendado)
+```bash
+export MCP_CONFIG_FILE="/caminho/para/seu/arquivo.yaml"
+java -jar mcpgateway-0.0.1-SNAPSHOT.jar --mcp
+```
+
+### 2. Propriedade do Spring Boot
+```bash
+java -jar mcpgateway-0.0.1-SNAPSHOT.jar --mcp.config.file=/caminho/para/seu/arquivo.yaml
+```
+
+### 3. Usando o Script run.sh
+```bash
+MCP_CONFIG_FILE="/caminho/para/seu/arquivo.yaml" ./run.sh
+```
+
+### 4. Modificação do application.yml
+Edite o arquivo `src/main/resources/application.yml`:
+```yaml
+mcp:
+  config:
+    file: /caminho/para/seu/arquivo.yaml
+```
+
+### Tipos de Caminho Suportados
+
+- **Caminho absoluto**: `/caminho/completo/arquivo.yaml`
+- **Caminho relativo**: `meu-arquivo.yaml` (busca primeiro no classpath, depois no filesystem)
+- **URL**: `file://caminho/arquivo.yaml`
+
+### Exemplos Práticos
+
+```bash
+# Usando arquivo personalizado
+cp custom-config.yaml /home/usuario/minha-config.yaml
+MCP_CONFIG_FILE="/home/usuario/minha-config.yaml" java -jar target/mcpgateway-0.0.1-SNAPSHOT.jar --mcp
+
+# Usando arquivo relativo
+cp custom-config.yaml minha-config.yaml
+MCP_CONFIG_FILE="minha-config.yaml" java -jar target/mcpgateway-0.0.1-SNAPSHOT.jar --mcp
+
+# Modo REST API com arquivo personalizado
+MCP_CONFIG_FILE="/caminho/para/config.yaml" java -jar target/mcpgateway-0.0.1-SNAPSHOT.jar
+```
+
 ## Integração com Claude Desktop
 
 Para usar com Claude Desktop, adicione o seguinte ao seu `claude_desktop_config.json`:
