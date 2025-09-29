@@ -41,7 +41,7 @@ public class McpServer {
                 }
             }
         } catch (Exception e) {
-            System.err.println("MCP Server error: " + e.getMessage());
+            sendError("MCP Server error: " + e.getMessage());
         }
     }
     
