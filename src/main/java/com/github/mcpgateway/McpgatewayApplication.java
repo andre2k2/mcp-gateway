@@ -17,6 +17,11 @@ public class McpgatewayApplication {
         // Check if running in MCP mode
         if (args.length > 0 && "--mcp".equals(args[0])) {
             System.setProperty("spring.main.web-application-type", "none");
+            // Disable Spring Boot banner and reduce logging in MCP mode
+            System.setProperty("spring.main.banner-mode", "off");
+            System.setProperty("logging.level.org.springframework", "WARN");
+            System.setProperty("logging.level.com.github.mcpgateway", "WARN");
+            System.setProperty("logging.level.root", "WARN");
         }
         
         SpringApplication.run(McpgatewayApplication.class, args);
@@ -27,7 +32,6 @@ public class McpgatewayApplication {
         return args -> {
             // Check if running in MCP mode
             if (args.length > 0 && "--mcp".equals(args[0])) {
-                System.err.println("Starting MCP Server...");
                 mcpServer.start();
             } else {
                 System.err.println("Starting REST API Server...");

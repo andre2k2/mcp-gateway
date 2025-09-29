@@ -40,10 +40,19 @@ public class ApiWrapperMcpService {
             Resource resource = getConfigResource();
             InputStream inputStream = resource.getInputStream();
             serverConfig = mapper.readValue(inputStream, ServerConfig.class);
-            System.err.println("✅ Configuration loaded from: " + resource.getDescription());
+            
+            // Only show configuration log if not running in MCP mode
+            if (!isMcpMode()) {
+                System.err.println("✅ Configuration loaded from: " + resource.getDescription());
+            }
         } catch (IOException e) {
             throw new RuntimeException("Failed to load configuration from: " + configFilePath, e);
         }
+    }
+    
+    private boolean isMcpMode() {
+        // Check if running in MCP mode by looking for the system property
+        return "none".equals(System.getProperty("spring.main.web-application-type"));
     }
 
     private Resource getConfigResource() {
